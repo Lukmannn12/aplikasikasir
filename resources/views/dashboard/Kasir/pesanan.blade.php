@@ -120,7 +120,7 @@
                         </template>
                     </div>
 
-                     <!-- Card 4 -->
+                    <!-- Card 4 -->
                     <div class="min-w-[360px]">
                         <template x-if="loading">
                             <div class="bg-gray-100 rounded-2xl p-5 flex items-center animate-pulse">
@@ -158,21 +158,21 @@
             </div>
             <!-- Tombol Kategori -->
             <div class="flex space-x-3 mb-6">
-                 <button
-                class="px-4 py-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 hover:text-blue-600">All Menu</button>
-                <button
-                    class="px-4 py-2 text-sm rounded-full text-gray-800 hover:bg-gray-200 hover:text-blue-600">Makanan</button>
-                <button
-                    class="px-4 py-2 text-sm rounded-full text-gray-800 hover:bg-gray-200 hover:text-blue-600">Minuman</button>
-                <button
-                    class="px-4 py-2 text-sm rounded-full text-gray-800 hover:bg-gray-200 hover:text-blue-600">Snack</button>
-                <button
-                    class="px-4 py-2 text-sm rounded-full text-gray-800 hover:bg-gray-200 hover:text-blue-600">Lainnya</button>
+                <a href="{{ route('dashboard.kasir.pesanan.index') }}"
+                    class="px-4 py-2 text-sm rounded-full {{ request('category_id') == null ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200 hover:text-blue-600' }}">
+                    All Menu
+                </a>
+                @foreach($categories as $category)
+                <a href="{{ route('dashboard.kasir.pesanan.index', ['category_id' => $category->id]) }}"
+                    class="px-4 py-2 text-sm rounded-full {{ request('category_id') == $category->id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200 hover:text-blue-600' }}">
+                    {{ $category->name }}
+                </a>
+                @endforeach
             </div>
 
             <!-- Daftar Produk -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <!-- Card Produk 1 -->
+                @forelse($produk as $p)
                 <div>
                     <!-- Skeleton -->
                     <template x-if="loading">
@@ -189,13 +189,21 @@
                     <!-- Produk Asli -->
                     <template x-if="!loading">
                         <div class="bg-white rounded-lg shadow overflow-hidden">
-                            <img src="https://via.placeholder.com/400x250" alt="Produk 1"
+                            @if($p->image)
+                            <img src="{{ asset('storage/' . $p->image) }}" alt="{{ $p->name }}"
                                 class="w-full h-40 object-cover">
+                            @else
+                            <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-400 text-sm">No Image</span>
+                            </div>
+                            @endif
                             <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-800">Nasi Goreng</h3>
-                                <p class="text-gray-600 text-sm mt-2">Deskripsi singkat produk 1 agar lebih menarik.</p>
+                                <h3 class="text-lg font-semibold text-gray-800">{{ $p->name }}</h3>
+                                <p class="text-gray-600 text-sm mt-2">{{ $p->description ?? 'Tidak ada deskripsi.' }}
+                                </p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-green-600 font-bold">Rp 150.000</span>
+                                    <span class="text-green-600 font-bold">Rp {{ number_format($p->price,0,',','.')
+                                        }}</span>
                                     <button
                                         class="px-7 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition">
                                         Beli
@@ -205,9 +213,13 @@
                         </div>
                     </template>
                 </div>
-
-                <!-- Tambahkan card produk lain dengan struktur sama -->
+                @empty
+                <div class="col-span-full text-center text-gray-500 py-10">
+                    Tidak ada produk
+                </div>
+                @endforelse
             </div>
+
         </div>
 
 

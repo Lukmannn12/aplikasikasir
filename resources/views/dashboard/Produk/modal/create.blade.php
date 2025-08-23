@@ -6,12 +6,9 @@
     </button>
 
     <!-- Modal -->
-    <div x-show="openModal" x-transition
-         class="fixed inset-0 z-50 pt-40 flex items-start justify-center"
-         x-cloak>
-        <div @click.away="openModal = false"
-             class="bg-white rounded-lg shadow-lg w-full max-w-md mx-2 p-6">
-            
+    <div x-show="openModal" x-transition class="fixed inset-0 z-50 pt-40 flex items-start justify-center" x-cloak>
+        <div @click.away="openModal = false" class="bg-white rounded-lg shadow-lg w-full max-w-md mx-2 p-6">
+
             <!-- Header -->
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">Tambah Produk</h3>
@@ -19,36 +16,74 @@
             </div>
 
             <!-- Body -->
-            <form class="space-y-3">
+            <form action="{{ route('dashboard.produk.store') }}" method="POST" enctype="multipart/form-data"
+                class="space-y-4">
+                @csrf
+
+                <!-- Nama Produk -->
                 <div>
-                    <label class="block text-sm font-medium mb-1">Nama Produk</label>
-                    <input type="text"
-                           class="w-full border rounded px-3 py-2 text-sm focus:ring focus:ring-blue-200">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
+                    <input type="text" name="name" id="name" placeholder="Masukkan nama produk"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        required>
                 </div>
+
+                <!-- Deskripsi -->
                 <div>
-                    <label class="block text-sm font-medium mb-1">Deskripsi</label>
-                    <textarea class="w-full border rounded px-3 py-2 text-sm focus:ring focus:ring-blue-200"></textarea>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                    <textarea name="description" id="description" placeholder="Masukkan deskripsi produk"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
                 </div>
+
+                <!-- Harga -->
                 <div>
-                    <label class="block text-sm font-medium mb-1">Harga</label>
-                    <input type="number"
-                           class="w-full border rounded px-3 py-2 text-sm focus:ring focus:ring-blue-200">
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Harga</label>
+                    <input type="number" name="price" id="price" placeholder="Masukkan harga produk"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        required>
                 </div>
+
+                <!-- Stok -->
                 <div>
-                    <label class="block text-sm font-medium mb-1">Stok</label>
-                    <input type="number"
-                           class="w-full border rounded px-3 py-2 text-sm focus:ring focus:ring-blue-200">
+                    <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stok</label>
+                    <input type="number" name="stock" id="stock" placeholder="Masukkan stok produk"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        required>
                 </div>
+
+                <!-- Kategori -->
                 <div>
-                    <label class="block text-sm font-medium mb-1">Image</label>
-                    <input type="file" class="w-full text-sm">
+                    <label for="product_category_id"
+                        class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                    <select name="product_category_id" id="product_category_id"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Image -->
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                    <input type="file" name="image" id="image" class="w-full text-sm text-gray-600">
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="flex justify-end space-x-2 mt-4">
+                    <button type="button" @click="openModal=false"
+                        class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition">Simpan</button>
                 </div>
             </form>
+
 
             <!-- Footer -->
             <div class="mt-4 flex justify-end space-x-2">
                 <button @click="openModal = false"
-                        class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-sm">Batal</button>
+                    class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-sm">Batal</button>
                 <button class="px-4 py-2 rounded-lg bg-blue-700 text-white hover:bg-blue-800 text-sm">Simpan</button>
             </div>
         </div>
