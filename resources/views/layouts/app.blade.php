@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @livewireStyles
     @vite('resources/css/app.css')
     <script defer>
         function toggleSidebar() {
@@ -84,7 +85,7 @@
             });
     </script>
     @endif
-
+    @livewireScripts
 </body>
 
 </html>

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('customer_name'); // nama customer
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // relasi ke produk
             $table->integer('quantity')->default(1); // jumlah produk yang dipesan
-            $table->decimal('price', 15, 2); // harga produk saat dipesan
+             $table->decimal('total_price', 15, 2); // total harga = harga produk * quantity
             $table->timestamps();
         });
     }

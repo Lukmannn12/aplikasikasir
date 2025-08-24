@@ -191,7 +191,7 @@
                         <div class="bg-white rounded-lg shadow overflow-hidden">
                             @if($p->image)
                             <img src="{{ asset('storage/' . $p->image) }}" alt="{{ $p->name }}"
-                                class="w-full h-40 object-cover">
+                                class="w-32 h-32 mx-auto my-4 object-contain">
                             @else
                             <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
                                 <span class="text-gray-400 text-sm">No Image</span>
@@ -204,10 +204,14 @@
                                 <div class="flex justify-between items-center mt-4">
                                     <span class="text-green-600 font-bold">Rp {{ number_format($p->price,0,',','.')
                                         }}</span>
-                                    <button
-                                        class="px-7 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition">
-                                        Beli
-                                    </button>
+                                    <form action="{{ route('dashboard.kasir.pesanan.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $p->id }}">
+                                        <button type="submit"
+                                            class="px-7 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition">
+                                            Beli
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -225,7 +229,127 @@
 
         <!-- Section Kanan: Detail Produk -->
         <div class="bg-white p-6 rounded shadow">
-            @include('dashboard.kasir.detailproduk')
+            <h2 class="text-lg font-bold mb-4">Detail Pesanan</h2>
+
+            <!-- Input Nama Customer -->
+            <div class="mb-4">
+                <label for="customerName" class="block text-sm font-medium text-gray-700 mb-1">Nama Customer</label>
+                <input type="text" id="customerName" name="customerName" placeholder="Masukkan nama customer"
+                    class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none" />
+            </div>
+
+            <!-- List Pesanan -->
+            <ul class="space-y-4">
+                @php $total = 0; @endphp
+                @forelse ($pesanans as $id => $psn)
+                <li class="flex items-center justify-between bg-white shadow-md rounded-xl p-4">
+                    <div class="flex items-center space-x-4">
+                        {{-- Gambar produk --}}
+                        <div class="w-16 h-16 bg-gray-100 flex items-center justify-center rounded-lg">
+                            @if($psn['image'])
+                            <img src="{{ asset('storage/' . $psn['image']) }}" alt="{{ $psn['name'] }}"
+                                class="w-16 h-16 object-contain rounded-lg">
+                            @else
+                            <span class="text-gray-400 text-xs">IMG</span>
+                            @endif
+                        </div>
+
+                        {{-- Nama & Qty --}}
+                        <div>
+                            <p class="font-semibold text-gray-800">{{ $psn['name'] }}</p>
+                            <div class="flex items-center space-x-2 mt-1">
+                                {{-- Qty --}}
+                                <span class="px-3 py-1 bg-gray-100 rounded-md">{{ $psn['qty'] }}</span>
+
+                                {{-- Button Plus --}}
+                                <form action="{{ route('dashboard.kasir.pesanan.update', $id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="action" value="plus">
+                                    <button type="submit"
+                                        class="w-7 h-7 flex items-center justify-center bg-gray-200 rounded-full">+</button>
+                                </form>
+
+                                {{-- Button Minus --}}
+                                <form action="{{ route('dashboard.kasir.pesanan.update', $id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="action" value="minus">
+                                    <button type="submit"
+                                        class="w-7 h-7 flex items-center justify-center bg-gray-200 rounded-full">-</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right space-y-2">
+                        <p class="font-semibold text-green-600">
+                            Rp {{ number_format($psn['total_price'], 0, ',', '.') }}
+                        </p>
+                        <form action="{{ route('dashboard.kasir.pesanan.destroy', $id) }}" method="POST"
+                            onsubmit="return confirm('Hapus produk ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 text-sm hover:underline">Hapus</button>
+                        </form>
+                    </div>
+                </li>
+
+                @php $total += $psn['total_price']; @endphp
+                @empty
+                <li class="text-gray-500 py-3 text-center">Belum ada pesanan</li>
+                @endforelse
+            </ul>
+
+            {{-- Total --}}
+            @if($pesanans->count() > 0)
+            <div class="mt-6 flex justify-between items-center font-semibold text-lg border-t pt-4">
+                <span>Total</span>
+                <span class="text-green-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
+            </div>
+            @endif
+
+
+            <!-- Metode Pembayaran -->
+            <div class="mt-4">
+                <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-1">Metode
+                    Pembayaran</label>
+                <select name="payment_method" id="payment_method"
+                    class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none">
+                    <option value="qris">QRIS</option>
+                    <option value="cash">Cash</option>
+                </select>
+
+                <div class="mt-3" id="cashInput" style="display:none;">
+                    <label for="cashAmount" class="block text-sm font-medium text-gray-700 mb-1">Nominal Uang</label>
+                    <input type="number" id="cashAmount" name="cashAmount" placeholder="Masukkan nominal (misal 50000)"
+                        class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none">
+                </div>
+            </div>
+
+            <!-- Tombol Checkout -->
+            <form action="" method="POST">
+
+                <button type="submit"
+                    class="mt-6 w-full bg-green-500 text-sm font-semibold text-white py-2 px-4 rounded-lg">
+                    Checkout
+                </button>
+            </form>
+
+            <!-- JS untuk menampilkan input cash jika dipilih -->
+            <script>
+                const paymentSelect = document.getElementById('payment_method');
+    const cashInput = document.getElementById('cashInput');
+
+    paymentSelect.addEventListener('change', function() {
+        if(this.value === 'cash') {
+            cashInput.style.display = 'block';
+        } else {
+            cashInput.style.display = 'none';
+        }
+    });
+            </script>
+
         </div>
     </div>
 

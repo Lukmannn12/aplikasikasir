@@ -10,7 +10,7 @@ class Pesanan extends Model
         'customer_name',
         'product_id',
         'quantity',
-        'price',
+        'total_price',
     ];
 
     public function product()
