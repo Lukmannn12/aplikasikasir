@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\PesananItemController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -25,15 +26,20 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::post('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 
 
+Route::get('/dashboard/kasir/riwayat', [PesananController::class, 'riwayat'])
+    ->name('dashboard.kasir.riwayat');
 
-Route::view('/dashboard/kasir/riwayat', 'dashboard.kasir.riwayat')->name('dashboard.kasir.riwayat');
+    // Riwayat detail
+Route::get('/dashboard/kasir/riwayat/{id}', [PesananController::class, 'riwayatDetail'])
+    ->name('dashboard.kasir.riwayat.detail');
+
 Route::resource('/dashboard/produk/produkk', ProductController::class)->names('dashboard.produk');
 Route::resource('/dashboard/produk/kategori', ProductCategoryController::class)->names('dashboard.produk.kategori');
 Route::resource('/dashboard/kasir/pesanan', PesananController::class)->names('dashboard.kasir.pesanan');
 
 // Tambah ke pesanan
 Route::post('/dashboard/kasir/pesanan/add', [PesananController::class, 'addToCart'])
-      ->name('dashboard.kasir.pesanan.add');
+    ->name('dashboard.kasir.pesanan.add');
 
 Route::get('/dashboard/kasir/pesanan/cart', [PesananController::class, 'cart'])
     ->name('dashboard.kasir.pesanan.cart');

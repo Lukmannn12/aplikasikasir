@@ -43,13 +43,6 @@
                         required>
                 </div>
 
-                <!-- Stok -->
-                <div>
-                    <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stok</label>
-                    <input type="number" name="stock" id="stock" placeholder="Masukkan stok produk"
-                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        required>
-                </div>
 
                 <!-- Kategori -->
                 <div>
@@ -64,6 +57,17 @@
                     </select>
                 </div>
 
+                <!-- Status -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select name="status" id="status"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="normal">Normal</option>
+                        <option value="best_seller">Best Seller</option>
+                        <option value="recommended">Recommended</option>
+                    </select>
+                </div>
+
                 <!-- Image -->
                 <div>
                     <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
@@ -73,19 +77,11 @@
                 <!-- Footer Buttons -->
                 <div class="flex justify-end space-x-2 mt-4">
                     <button type="button" @click="openModal=false"
-                        class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">Batal</button>
+                        class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-sm">Batal</button>
                     <button type="submit"
-                        class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition">Simpan</button>
+                        class="px-4 py-2 rounded-lg bg-blue-700 text-white hover:bg-blue-800 text-sm">Simpan</button>
                 </div>
             </form>
-
-
-            <!-- Footer -->
-            <div class="mt-4 flex justify-end space-x-2">
-                <button @click="openModal = false"
-                    class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-sm">Batal</button>
-                <button class="px-4 py-2 rounded-lg bg-blue-700 text-white hover:bg-blue-800 text-sm">Simpan</button>
-            </div>
         </div>
     </div>
 </div>

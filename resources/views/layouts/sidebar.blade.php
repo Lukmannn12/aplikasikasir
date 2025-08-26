@@ -69,7 +69,7 @@
                     <li>
                         <a href="{{ route('dashboard.kasir.riwayat') }}"
                             class="flex items-center space-x-2 px-3 py-2 rounded-lg transition
-                {{ request()->is('dashboard/kasir/riwayat') ? 'bg-gray-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600' }}">
+   {{ request()->is('dashboard/kasir/riwayat*') ? 'bg-gray-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600' }}">
 
                             <!-- Ikon Riwayat -->
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

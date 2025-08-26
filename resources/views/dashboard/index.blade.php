@@ -23,7 +23,7 @@
                     <div class="w-full flex justify-between items-center">
                         <div class="space-y-2">
                             <h3 class="text-sm font-medium text-gray-500">Total Produk</h3>
-                            <p class="text-2xl font-bold text-gray-800">{{ $totalProduk ?? 0 }}</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $produk?? 0 }}</p>
                         </div>
                         <div class="bg-green-100 p-3 rounded-full">
                             <i class="fas fa-boxes-stacked text-green-600 text-xl"></i>
@@ -47,7 +47,7 @@
                     <div class="w-full flex justify-between items-center">
                         <div class="space-y-2">
                             <h3 class="text-sm font-medium text-gray-500">Total Kategori</h3>
-                            <p class="text-2xl font-bold text-gray-800">{{ $totalKategori ?? 0 }}</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $category ?? 0 }}</p>
                         </div>
                         <div class="bg-blue-100 p-3 rounded-full">
                             <i class="fas fa-layer-group text-blue-600 text-xl"></i>
@@ -71,7 +71,7 @@
                     <div class="w-full flex justify-between items-center">
                         <div class="space-y-2">
                             <h3 class="text-sm font-medium text-gray-500">Total User</h3>
-                            <p class="text-2xl font-bold text-gray-800">{{ $totalUser ?? 0 }}</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $user ?? 0 }}</p>
                         </div>
                         <div class="bg-purple-100 p-3 rounded-full">
                             <i class="fas fa-user-friends text-purple-600 text-xl"></i>
@@ -95,7 +95,7 @@
                     <div class="w-full flex justify-between items-center">
                         <div class="space-y-2">
                             <h3 class="text-sm font-medium text-gray-500">Total Order</h3>
-                            <p class="text-2xl font-bold text-gray-800">{{ $totalOrder ?? 0 }}</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $totalOrders ?? 0 }}</p>
                         </div>
                         <div class="bg-red-100 p-3 rounded-full">
                             <i class="fas fa-receipt text-red-600 text-xl"></i>

@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pesanan extends Model
 {
-    protected $fillable = [
-        'customer_name',
-        'product_id',
-        'quantity',
-        'total_price',
-    ];
+    protected $fillable = ['customer_id', 'total_price', 'status', 'payment_method', 'cash_amount'];
 
-    public function product()
+    public function items()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(PesananItem::class);
     }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
 }

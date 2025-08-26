@@ -36,13 +36,18 @@
                             <div class="w-48 h-8 bg-gray-200 rounded animate-pulse"></div>
                         </template>
                         <template x-if="!loadingTable">
-                            <input type="text" placeholder="Cari produk..."
-                                class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-300">
+                            <div>
+                                <form method="GET" action="{{ route('dashboard.produk.index') }}">
+                                    <input type="text" name="search" value="{{ request('search') }}"
+                                        placeholder="Cari produk..."
+                                        class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring focus:ring-gray-700">
+                                </form>
+                            </div>
                         </template>
                     </div>
 
                     <!-- Filter Kategori -->
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 text-sm">
                         <a href="{{ route('dashboard.produk.index') }}" class="px-3 py-1 rounded-lg border 
               {{ request('category_id') == null ? 'bg-green-600 text-white' : 'bg-white text-gray-700' }}
               hover:bg-green-500 hover:text-white transition-colors duration-200">
@@ -70,14 +75,16 @@
                         <th class="px-6 py-3 text-sm font-medium">No</th>
                         <th class="px-6 py-3 text-sm font-medium">Image</th>
                         <th class="px-6 py-3 text-sm font-medium">Nama</th>
+                        <th class="px-6 py-3 text-sm font-medium">Deskripsi</th>
+                        <th class="px-6 py-3 text-sm font-medium">Kategori</th>
                         <th class="px-6 py-3 text-sm font-medium">Harga</th>
-                        <th class="px-6 py-3 text-sm font-medium">Stok</th>
+                        <th class="px-6 py-3 text-sm font-medium">Status</th>
                         <th class="px-6 py-3 text-sm font-medium">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 text-center">
                     @forelse($products as $p)
-                    <tr>
+                    <tr class="text-sm">
                         <td class="px-6 py-4">{{ $loop->iteration }}</td>
                         <td class="px-6 py-4">
                             @if($p->image)
@@ -87,19 +94,48 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">{{ $p->name }}</td>
+                        <td class="px-6 py-4">{{ $p->description }}</td>
+                        <td class="px-6 py-4">{{ $p->category->name ?? 'Kategori tidak ditemukan' }}</td>
                         <td class="px-6 py-4">Rp {{ number_format($p->price,0,',','.') }}</td>
-                        <td class="px-6 py-4">{{ $p->stock }}</td>
                         <td class="px-6 py-4">
-                            <a href="{{ route('dashboard.produk.edit', $p->id) }}"
-                                class="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm mx-1">Edit</a>
-                            <form action="{{ route('dashboard.produk.destroy', $p->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin hapus produk ini?')" class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm mx-1">Hapus</button>
-                            </form>
+                            @if ($p->status === 'normal')
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700">
+                                Normal
+                            </span>
+                            @elseif ($p->status === 'best_seller')
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-200 text-green-700">
+                                Best Seller
+                            </span>
+                            @elseif ($p->status === 'recommended')
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-200 text-blue-700">
+                                Recommended
+                            </span>
+                            @endif
                         </td>
+                        <td class="px-6 py-4">
+                            <div class="flex justify-center space-x-2">
+                                <!-- Tombol Edit -->
+                                @include('dashboard.Produk.modal.edit', ['p' => $p])
+
+                                <!-- Tombol Delete -->
+                                <form action="{{ route('dashboard.produk.destroy', $p->id) }}" method="POST"
+                                    onsubmit="return confirm('Yakin hapus produk ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm flex items-center space-x-1 hover:bg-red-700 transition">
+                                        <!-- Icon tong sampah -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+                                        </svg>
+                                        <span>Hapus</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+
                     </tr>
                     @empty
                     <tr>

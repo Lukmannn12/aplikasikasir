@@ -11,151 +11,68 @@
                     <span class="text-yellow-500">🔥</span> Best Seller & Recommended
                 </h2>
 
-                <!-- Wrapper Scroll Horizontal -->
-                <div
-                    class="flex space-x-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                <div x-data="{ loadingSpecial: true }" x-init="setTimeout(() => loadingSpecial = false, 1500)">
+                    <!-- Skeleton Loading -->
+                    <template x-if="loadingSpecial">
+                        <div class="flex space-x-4 overflow-x-auto pb-3">
+                            <!-- Skeleton Card -->
+                            <template x-for="i in 3" :key="i">
+                                <div class="min-w-[360px]">
+                                    <div class="bg-white shadow-md rounded-2xl p-5 flex items-center animate-pulse">
+                                        <!-- Gambar Skeleton -->
+                                        <div class="w-28 h-28 bg-gray-200 rounded-xl"></div>
 
-                    <!-- Card 1 -->
-                    <div class="min-w-[360px]">
-                        <!-- Skeleton -->
-                        <template x-if="loading">
-                            <div class="bg-gray-100 rounded-2xl p-5 flex items-center animate-pulse">
-                                <div class="w-28 h-28 bg-gray-300 rounded-xl"></div>
-                                <div class="ml-4 flex-1 space-y-3">
-                                    <div class="w-20 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-32 h-5 bg-gray-300 rounded"></div>
-                                    <div class="w-16 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-full h-9 bg-gray-300 rounded-lg"></div>
+                                        <!-- Text Skeleton -->
+                                        <div class="ml-4 flex-1 space-y-3">
+                                            <div class="w-20 h-4 bg-gray-200 rounded"></div>
+                                            <div class="w-32 h-5 bg-gray-200 rounded"></div>
+                                            <div class="w-24 h-4 bg-gray-200 rounded"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </template>
+                            </template>
+                        </div>
+                    </template>
 
-                        <!-- Produk -->
-                        <template x-if="!loading">
-                            <div
-                                class="bg-gradient-to-r from-yellow-50 to-yellow-100 shadow-md rounded-2xl p-5 flex items-center">
-                                <img src="https://via.placeholder.com/120" alt="Best Seller"
-                                    class="w-28 h-28 object-cover rounded-xl border border-yellow-200 shadow-sm">
-                                <div class="ml-4 flex-1">
-                                    <span
-                                        class="inline-block text-xs bg-yellow-400 text-white px-2 py-1 rounded-full mb-2">
-                                        Best Seller
-                                    </span>
-                                    <h3 class="text-base font-semibold text-gray-800 py-1">Nasi Goreng Spesial</h3>
-                                    <p class="text-gray-500 text-sm mb-2">Rp 25.000</p>
-                                    <button
-                                        class="w-full py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg text-sm font-medium shadow-md">
-                                        + Tambah Pesanan
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+                    <!-- Produk Asli -->
+                    <template x-if="!loadingSpecial">
+                        <div
+                            class="flex space-x-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
 
-                    <!-- Card 2 -->
-                    <div class="min-w-[360px]">
-                        <template x-if="loading">
-                            <div class="bg-gray-100 rounded-2xl p-5 flex items-center animate-pulse">
-                                <div class="w-28 h-28 bg-gray-300 rounded-xl"></div>
-                                <div class="ml-4 flex-1 space-y-3">
-                                    <div class="w-20 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-32 h-5 bg-gray-300 rounded"></div>
-                                    <div class="w-16 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-full h-9 bg-gray-300 rounded-lg"></div>
-                                </div>
-                            </div>
-                        </template>
-                        <template x-if="!loading">
-                            <div
-                                class="bg-gradient-to-r from-yellow-50 to-yellow-100 shadow-md rounded-2xl p-5 flex items-center">
-                                <img src="https://via.placeholder.com/120" alt="Best Seller"
-                                    class="w-28 h-28 object-cover rounded-xl border border-yellow-200 shadow-sm">
-                                <div class="ml-4 flex-1">
-                                    <span
-                                        class="inline-block text-xs bg-yellow-400 text-white px-2 py-1 rounded-full mb-2">
-                                        Best Seller
-                                    </span>
-                                    <h3 class="text-base font-semibold text-gray-800 py-1">Ayam Bakar Madu</h3>
-                                    <p class="text-gray-500 text-sm mb-2">Rp 30.000</p>
-                                    <button
-                                        class="w-full py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg text-sm font-medium shadow-md">
-                                        + Tambah Pesanan
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+                            @forelse ($specialProducts as $product)
+                            <div class="min-w-[360px]">
+                                <div class="bg-gradient-to-r 
+                    @if($product->status == 'best_seller') from-yellow-50 to-yellow-100 border-yellow-200
+                    @elseif($product->status == 'recommended') from-blue-50 to-indigo-100 border-indigo-200
+                    @endif
+                    shadow-md rounded-2xl p-5 flex items-center">
 
-                    <!-- Card 3 -->
-                    <div class="min-w-[360px]">
-                        <template x-if="loading">
-                            <div class="bg-gray-100 rounded-2xl p-5 flex items-center animate-pulse">
-                                <div class="w-28 h-28 bg-gray-300 rounded-xl"></div>
-                                <div class="ml-4 flex-1 space-y-3">
-                                    <div class="w-20 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-32 h-5 bg-gray-300 rounded"></div>
-                                    <div class="w-16 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-full h-9 bg-gray-300 rounded-lg"></div>
-                                </div>
-                            </div>
-                        </template>
-                        <template x-if="!loading">
-                            <div
-                                class="bg-gradient-to-r from-blue-50 to-indigo-100 shadow-md rounded-2xl p-5 flex items-center">
-                                <img src="https://via.placeholder.com/120" alt="Recommended"
-                                    class="w-28 h-28 object-cover rounded-xl border border-indigo-200 shadow-sm">
-                                <div class="ml-4 flex-1">
-                                    <span
-                                        class="inline-block text-xs bg-indigo-500 text-white px-2 py-1 rounded-full mb-2">
-                                        Recommended
-                                    </span>
-                                    <h3 class="text-base font-semibold text-gray-800 py-1">Es Teh Manis Jumbo</h3>
-                                    <p class="text-gray-500 text-sm mb-2">Rp 10.000</p>
-                                    <button
-                                        class="w-full py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg text-sm font-medium shadow-md">
-                                        + Tambah Pesanan
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+                                    <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/120' }}"
+                                        alt="{{ $product->name }}" class="w-28 h-28 object-cover rounded-xl shadow-sm">
 
-                    <!-- Card 4 -->
-                    <div class="min-w-[360px]">
-                        <template x-if="loading">
-                            <div class="bg-gray-100 rounded-2xl p-5 flex items-center animate-pulse">
-                                <div class="w-28 h-28 bg-gray-300 rounded-xl"></div>
-                                <div class="ml-4 flex-1 space-y-3">
-                                    <div class="w-20 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-32 h-5 bg-gray-300 rounded"></div>
-                                    <div class="w-16 h-4 bg-gray-300 rounded"></div>
-                                    <div class="w-full h-9 bg-gray-300 rounded-lg"></div>
-                                </div>
-                            </div>
-                        </template>
-                        <template x-if="!loading">
-                            <div
-                                class="bg-gradient-to-r from-blue-50 to-indigo-100 shadow-md rounded-2xl p-5 flex items-center">
-                                <img src="https://via.placeholder.com/120" alt="Recommended"
-                                    class="w-28 h-28 object-cover rounded-xl border border-indigo-200 shadow-sm">
-                                <div class="ml-4 flex-1">
-                                    <span
-                                        class="inline-block text-xs bg-indigo-500 text-white px-2 py-1 rounded-full mb-2">
-                                        Recommended
-                                    </span>
-                                    <h3 class="text-base font-semibold text-gray-800 py-1">Es Teh Manis Jumbo</h3>
-                                    <p class="text-gray-500 text-sm mb-2">Rp 10.000</p>
-                                    <button
-                                        class="w-full py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg text-sm font-medium shadow-md">
-                                        + Tambah Pesanan
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <span class="inline-block text-xs px-2 py-1 rounded-full mb-2
+                            @if($product->status == 'best_seller') bg-yellow-400 text-white
+                            @elseif($product->status == 'recommended') bg-indigo-500 text-white
+                        @endif">
+                                            {{ ucfirst(str_replace('_', ' ', $product->status)) }}
+                                        </span>
 
+                                        <h3 class="text-base font-semibold text-gray-800 py-1">{{ $product->name }}</h3>
+                                        <p class="text-gray-500 text-sm mb-2">
+                                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            @empty
+                            <p class="text-gray-500">Belum ada produk Best Seller atau Recommended</p>
+                            @endforelse
+                        </div>
+                    </template>
                 </div>
             </div>
+
             <!-- Tombol Kategori -->
             <div class="flex space-x-3 mb-6">
                 <a href="{{ route('dashboard.kasir.pesanan.index') }}"
@@ -225,133 +142,176 @@
             </div>
 
         </div>
-
-
         <!-- Section Kanan: Detail Produk -->
         <div class="bg-white p-6 rounded shadow">
             <h2 class="text-lg font-bold mb-4">Detail Pesanan</h2>
 
-            <!-- Input Nama Customer -->
-            <div class="mb-4">
-                <label for="customerName" class="block text-sm font-medium text-gray-700 mb-1">Nama Customer</label>
-                <input type="text" id="customerName" name="customerName" placeholder="Masukkan nama customer"
-                    class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none" />
-            </div>
+            <!-- Skeleton -->
+            <template x-if="loading">
+                <div class="space-y-4 animate-pulse">
+                    <!-- Input Customer -->
+                    <div>
+                        <div class="h-4 w-32 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-9 w-full bg-gray-200 rounded"></div>
+                    </div>
 
-            <!-- List Pesanan -->
-            <ul class="space-y-4">
-                @php $total = 0; @endphp
-                @forelse ($pesanans as $id => $psn)
-                <li class="flex items-center justify-between bg-white shadow-md rounded-xl p-4">
-                    <div class="flex items-center space-x-4">
-                        {{-- Gambar produk --}}
-                        <div class="w-16 h-16 bg-gray-100 flex items-center justify-center rounded-lg">
-                            @if($psn['image'])
-                            <img src="{{ asset('storage/' . $psn['image']) }}" alt="{{ $psn['name'] }}"
-                                class="w-16 h-16 object-contain rounded-lg">
-                            @else
-                            <span class="text-gray-400 text-xs">IMG</span>
-                            @endif
-                        </div>
+                    <!-- List Pesanan Dummy -->
+                    <div class="space-y-3">
+                        @for ($i = 0; $i < 2; $i++) <div
+                            class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gray-300 rounded-lg"></div>
+                                <div>
+                                    <div class="h-4 w-24 bg-gray-300 rounded mb-2"></div>
+                                    <div class="h-3 w-10 bg-gray-200 rounded"></div>
+                                </div>
+                            </div>
+                            <div class="h-4 w-16 bg-gray-300 rounded"></div>
+                    </div>
+                    @endfor
+                </div>
 
-                        {{-- Nama & Qty --}}
-                        <div>
-                            <p class="font-semibold text-gray-800">{{ $psn['name'] }}</p>
-                            <div class="flex items-center space-x-2 mt-1">
-                                {{-- Qty --}}
-                                <span class="px-3 py-1 bg-gray-100 rounded-md">{{ $psn['qty'] }}</span>
+                <!-- Total -->
+                <div class="flex justify-between items-center border-t pt-4">
+                    <div class="h-5 w-20 bg-gray-300 rounded"></div>
+                    <div class="h-5 w-24 bg-gray-300 rounded"></div>
+                </div>
 
-                                {{-- Button Plus --}}
-                                <form action="{{ route('dashboard.kasir.pesanan.update', $id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="action" value="plus">
-                                    <button type="submit"
-                                        class="w-7 h-7 flex items-center justify-center bg-gray-200 rounded-full">+</button>
-                                </form>
+                <!-- Tombol -->
+                <div class="h-10 w-full bg-gray-300 rounded-lg"></div>
+        </div>
+        </template>
 
-                                {{-- Button Minus --}}
-                                <form action="{{ route('dashboard.kasir.pesanan.update', $id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="action" value="minus">
-                                    <button type="submit"
-                                        class="w-7 h-7 flex items-center justify-center bg-gray-200 rounded-full">-</button>
-                                </form>
+        <!-- Konten Asli -->
+        <template x-if="!loading">
+            <form action="{{ route('dashboard.kasir.pesanan.store') }}" method="POST">
+                @csrf
+                <input type="text" id="name" name="name" value="{{ old('name') }}"
+                    placeholder="Masukkan nama customer..." class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none
+                    @error('name') @enderror" />
+
+                @error('customer_name')
+                <p class="py-2 px-3 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+
+                <!-- Hidden Input untuk items -->
+                @foreach ($pesanans as $id => $psn)
+                <input type="hidden" name="items[{{ $id }}][product_id]" value="{{ $id }}">
+                <input type="hidden" name="items[{{ $id }}][qty]" value="{{ $psn['qty'] }}">
+                <input type="hidden" name="items[{{ $id }}][total_price]" value="{{ $psn['total_price'] }}">
+                @endforeach
+
+                <!-- List Pesanan -->
+                <ul class="space-y-4 py-5">
+                    @php $total = 0; @endphp
+                    @forelse ($pesanans as $id => $psn)
+                    <li class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gray-100 flex items-center justify-center rounded-lg">
+                                @if($psn['image'])
+                                <img src="{{ asset('storage/' . $psn['image']) }}" alt="{{ $psn['name'] }}"
+                                    class="w-12 h-12 object-contain rounded-lg">
+                                @else
+                                <span class="text-gray-400 text-xs">IMG</span>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-800">{{ $psn['name'] }}</p>
+                                <p class="text-xs text-gray-500">x {{ $psn['qty'] }}</p>
                             </div>
                         </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="font-medium text-green-600">
+                                Rp {{ number_format($psn['total_price'], 0, ',', '.') }}
+                            </span>
+
+                            <!-- Tombol hapus -->
+                            <form action="{{ route('dashboard.kasir.pesanan.destroy', $id) }}" method="POST"
+                                onsubmit="return confirm('Hapus produk ini dari pesanan?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700">
+                                    ✖
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                    @php $total += $psn['total_price']; @endphp
+                    @empty
+                    <li class="text-gray-500 py-3 text-center">Belum ada pesanan</li>
+                    @endforelse
+                </ul>
+
+                <!-- Metode Pembayaran -->
+                <div class="relative w-full mt-4 border-t pt-4">
+                    <h1 class="text-lg font-bold mb-4">Metode Pembayaran</h1>
+                    <select id="payment_method" name="payment_method"
+                        class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none appearance-none">
+                        <option value="">-- Pilih Metode Pembayaran --</option>
+                        <option value="cash">Cash</option>
+                        <option value="qris">QRIS</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </div>
-
-                    <div class="text-right space-y-2">
-                        <p class="font-semibold text-green-600">
-                            Rp {{ number_format($psn['total_price'], 0, ',', '.') }}
-                        </p>
-                        <form action="{{ route('dashboard.kasir.pesanan.destroy', $id) }}" method="POST"
-                            onsubmit="return confirm('Hapus produk ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 text-sm hover:underline">Hapus</button>
-                        </form>
-                    </div>
-                </li>
-
-                @php $total += $psn['total_price']; @endphp
-                @empty
-                <li class="text-gray-500 py-3 text-center">Belum ada pesanan</li>
-                @endforelse
-            </ul>
-
-            {{-- Total --}}
-            @if($pesanans->count() > 0)
-            <div class="mt-6 flex justify-between items-center font-semibold text-lg border-t pt-4">
-                <span>Total</span>
-                <span class="text-green-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
-            </div>
-            @endif
-
-
-            <!-- Metode Pembayaran -->
-            <div class="mt-4">
-                <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-1">Metode
-                    Pembayaran</label>
-                <select name="payment_method" id="payment_method"
-                    class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none">
-                    <option value="qris">QRIS</option>
-                    <option value="cash">Cash</option>
-                </select>
-
-                <div class="mt-3" id="cashInput" style="display:none;">
-                    <label for="cashAmount" class="block text-sm font-medium text-gray-700 mb-1">Nominal Uang</label>
-                    <input type="number" id="cashAmount" name="cashAmount" placeholder="Masukkan nominal (misal 50000)"
-                        class="w-full px-3 py-2 border text-gray-600 border-gray-500 rounded-lg text-sm focus:outline-none">
                 </div>
-            </div>
 
-            <!-- Tombol Checkout -->
-            <form action="" method="POST">
+                <!-- Input jumlah uang kasir -->
+                <div id="cash-input" class="mt-3 hidden">
+                    <label for="cash_amount" class="block text-sm font-medium text-gray-700 mb-2">Jumlah Uang</label>
+                    <input type="number" name="cash_amount" id="cash_amount" placeholder="Masukkan jumlah uang"
+                        value="{{ old('cash_amount') }}"
+                        class="px-3 py-2 border border-gray-300 rounded-lg w-full text-sm focus:outline-none" min="0"
+                        step="0.01">
+                    <p class="text-xs text-red-500 mt-1">* Masukkan nominal yang dibayar customer</p>
+                </div>
 
-                <button type="submit"
-                    class="mt-6 w-full bg-green-500 text-sm font-semibold text-white py-2 px-4 rounded-lg">
-                    Checkout
-                </button>
+                <script>
+                    const paymentSelect = document.getElementById('payment_method');
+                    const cashInput = document.getElementById('cash-input');
+
+                    paymentSelect.addEventListener('change', () => {
+                        if (paymentSelect.value === 'cash') {
+                            cashInput.classList.remove('hidden');
+                        } else {
+                            cashInput.classList.add('hidden');
+                        }
+                    });
+                </script>
+
+
+                <!-- Total -->
+                <div class="mt-6 flex justify-between items-center font-semibold text-lg border-t pt-4">
+                    <span>Total</span>
+                    <span class="text-green-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                </div>
+
+                <!-- Tombol Checkout -->
+                @if($pesanans->count() > 0)
+                <div class="mt-6">
+                    <button type="submit"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition">
+                        Checkout
+                    </button>
+                </div>
+                @endif
             </form>
-
-            <!-- JS untuk menampilkan input cash jika dipilih -->
-            <script>
-                const paymentSelect = document.getElementById('payment_method');
-    const cashInput = document.getElementById('cashInput');
-
-    paymentSelect.addEventListener('change', function() {
-        if(this.value === 'cash') {
-            cashInput.style.display = 'block';
-        } else {
-            cashInput.style.display = 'none';
-        }
-    });
-            </script>
-
-        </div>
+        </template>
     </div>
 
+</div>
+<!-- Script untuk toggle input Cash -->
+<script>
+    document.getElementById('payment_method').addEventListener('change', function () {
+        let cashInput = document.getElementById('cash-input');
+        if (this.value === 'cash') {
+            cashInput.classList.remove('hidden');
+        } else {
+            cashInput.classList.add('hidden');
+        }
+    });
+</script>
 
-    @endsection
+@endsection

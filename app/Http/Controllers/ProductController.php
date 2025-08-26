@@ -15,19 +15,23 @@ class ProductController extends Controller
     {
         $categories = ProductCategory::all();
 
+        $specialProducts = Product::whereIn('status', ['best_seller', 'recommended'])->get();
+
         $query = Product::with('category');
 
         if ($request->has('category_id') && $request->category_id != '') {
             $query->where('product_category_id', $request->category_id);
         }
 
+        // filter pencarian berdasarkan nama
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
         $products = $query->get();
 
-        $viewName = $request->routeIs('dashboard.produk.index')
-            ? 'dashboard.produk.index'
-            : 'dashboard.kasir.pesanan';
 
-        return view($viewName, compact('products', 'categories'));
+        return view('dashboard.produk.index', compact('products', 'categories', 'specialProducts'));
     }
 
     /**
@@ -47,9 +51,9 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'stock' => 'required|integer',
             'product_category_id' => 'required|exists:product_categories,id',
             'image' => 'nullable|image|max:2048',
+            'status' => 'required|in:normal,best_seller,recommended',
         ]);
 
         if ($request->hasFile('image')) {
@@ -81,9 +85,41 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'status' => 'nullable|string',
+            'product_category_id' => 'required|exists:product_categories,id',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $data = $request->only([
+            'name',
+            'description',
+            'price',
+            'status',
+            'product_category_id'
+        ]);
+
+        // cek apakah ada file image baru
+        if ($request->hasFile('image')) {
+            // hapus file lama kalau ada
+            if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+                unlink(public_path('storage/' . $product->image));
+            }
+
+            // simpan file baru
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($data);
+
+        return redirect()->route('dashboard.produk.index')->with('success', 'Produk berhasil diupdate.');
     }
 
     /**

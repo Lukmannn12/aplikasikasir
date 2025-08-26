@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pesanans', function (Blueprint $table) {
+        Schema::create('pesanan_items', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_name'); // nama customer
+            $table->foreignId('pesanan_id')->constrained('pesanans')->onDelete('cascade'); // relasi ke pesanan
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // relasi ke produk
-            $table->integer('quantity')->default(1); // jumlah produk yang dipesan
-             $table->decimal('total_price', 15, 2); // total harga = harga produk * quantity
+            $table->integer('quantity')->default(1); // jumlah produk
+            $table->decimal('price', 12, 2); // harga satuan produk saat dipesan
+            $table->decimal('subtotal', 15, 2); // price * quantity
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pesanans');
+        Schema::dropIfExists('pesanan_items');
     }
 };

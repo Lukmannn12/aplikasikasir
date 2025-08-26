@@ -57,21 +57,25 @@
                         <tr>
                             <td class="px-6 py-4">{{ $loop->iteration }}</td>
                             <td class="px-6 py-4">{{ $kategori->name }}</td>
-                            <td class="px-6 py-4">
-                                <!-- Edit Button -->
-                                <a href="{{ route('dashboard.produk.kategori.edit', $kategori->id) }}"
-                                    class="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm mx-1">
-                                    Edit
-                                </a>
+                            <td class="px-6 py-4 text-center flex justify-center space-x-2">
+                                <!-- Edit Button (menggunakan icon) -->
+                                @include('dashboard.Produk.kategori.modal.edit', ['kategori' => $kategori])
 
-                                <!-- Delete Button -->
+                                <!-- Delete Button (menggunakan icon) -->
                                 <form action="{{ route('dashboard.produk.kategori.destroy', $kategori->id) }}"
-                                    method="POST" class="inline-block"
-                                    onsubmit="return confirm('Yakin mau hapus kategori ini?')">
+                                    method="POST" onsubmit="return confirm('Yakin mau hapus kategori ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm mx-1">Hapus</button>
+                                        class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm mx-1 flex items-center space-x-1">
+                                        <!-- Icon tong sampah -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+                                        </svg>
+                                        <span>Hapus</span>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

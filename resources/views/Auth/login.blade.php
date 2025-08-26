@@ -7,6 +7,7 @@
     <title>Login - Aplikasi Kasir</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    @vite('resources/css/app.css')
 </head>
 
 <body class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gray-100">
@@ -77,20 +78,21 @@
             @csrf
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Email</label>
-                <div class="relative">
-                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Masukkan Email Anda...."
-                        required autofocus
-                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm">
-                    <i class="ph ph-envelope text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                <div class="relative flex items-center">
+                    <i class="ph ph-envelope text-gray-400 absolute left-3"></i>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
+                        placeholder="Masukkan Email Anda...." required autofocus>
                 </div>
             </div>
 
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
-                <div class="relative">
-                    <input type="password" name="password" required placeholder="Masukkan Password Anda...."
-                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm">
-                    <i class="ph ph-lock text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                 <div class="relative flex items-center">
+                    <i class="ph ph-lock text-gray-400 absolute left-3"></i>
+                    <input type="email" name="email" value="{{ old('password') }}"
+                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
+                        placeholder="Masukkan Password Anda...." required autofocus>
                 </div>
             </div>
 

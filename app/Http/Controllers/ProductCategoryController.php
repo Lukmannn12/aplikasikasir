@@ -59,18 +59,25 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductCategory $productCategory)
+    public function update(Request $request, ProductCategory $kategori)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $kategori->update($validated);
+
+        return redirect()->route('dashboard.produk.kategori.index')
+            ->with('success', 'Kategori berhasil diupdate.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-public function destroy(ProductCategory $kategori)
-{
-    $kategori->delete(); // atau forceDelete()
-    return redirect()->route('dashboard.produk.kategori.index')
-        ->with('success', 'Kategori produk berhasil dihapus.');
-}
+    public function destroy(ProductCategory $kategori)
+    {
+        $kategori->delete(); // atau forceDelete()
+        return redirect()->route('dashboard.produk.kategori.index')
+            ->with('success', 'Kategori produk berhasil dihapus.');
+    }
 }

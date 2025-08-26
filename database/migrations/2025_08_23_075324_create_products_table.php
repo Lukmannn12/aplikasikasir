@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable(); // deskripsi produk
             $table->decimal('price', 12, 2)->default(0); // harga produk
             $table->string('image')->nullable(); // gambar produk
-            $table->unsignedInteger('stock')->default(0); // stok produk
+             $table->enum('status', ['normal', 'best_seller', 'recommended'])->default('normal');
             $table->unsignedBigInteger('product_category_id'); // id kategori (relasi)
             $table->timestamps();
         });

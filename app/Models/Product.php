@@ -11,7 +11,7 @@ class Product extends Model
         'description',
         'price',
         'image',
-        'stock',
+        'status',
         'product_category_id',
     ];
 
@@ -20,8 +20,8 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
-    public function pesanan()
+    public function pesananItems()
     {
-        return $this->hasMany(Pesanan::class);
+        return $this->hasMany(PesananItem::class);
     }
 }
