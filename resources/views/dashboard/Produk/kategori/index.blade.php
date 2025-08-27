@@ -32,7 +32,7 @@
                     </template>
                     <template x-if="!loadingTable">
                         <input type="text" placeholder="Cari kategori..."
-                            class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-300">
+                            class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-gray-300">
                     </template>
                 </div>
             </div>

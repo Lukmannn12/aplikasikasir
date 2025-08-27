@@ -74,7 +74,7 @@
                                     @if($item->status == 'completed') bg-green-100 text-green-600
                                     @elseif($item->status == 'pending') bg-yellow-100 text-yellow-600
                                     @elseif($item->status == 'cancelled') bg-red-100 text-red-600
-                                    @else bg-gray-100 text-gray-600 @endif">
+                                    @else bg-green-400 text-white @endif">
                                     {{ ucfirst($item->status) }}
                                 </span>
                             </td>

@@ -140,32 +140,39 @@
 
 
             <!-- Manajemen Keuangan -->
-            <li class="border-b border-gray-200 py-2" x-data="{ openKeuangan: false }">
+            <li class="border-t border-b border-gray-200 py-2"
+                x-data="{ openKeuangan: {{ request()->is('dashboard/keuangan/*') ? 'true' : 'false' }} }">
 
-                <button @click="openKeuangan = !openKeuangan" class="flex items-center justify-between w-full px-3 py-2 rounded-lg
-        text-gray-800 hover:bg-gray-100 hover:text-blue-600 transition">
+                <!-- Toggle Button -->
+                <button @click="openKeuangan = !openKeuangan" class="flex items-center justify-between w-full px-3 py-2 rounded-lg  
+        {{ request()->is('dashboard/keuangan/*') 
+            ? 'bg-gray-100 text-blue-600' 
+            : 'text-gray-800 hover:bg-gray-100 hover:text-blue-600' }} 
+        transition">
 
+                    <!-- Ikon + Label -->
                     <div class="flex items-center space-x-2">
-                        <!-- Ikon keuangan -->
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10v10m0 4v-4m8-4a8 8 0 11-16 0 8 8 0 0116 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 
+                         2m0-10v10m0 4v-4m8-4a8 8 0 11-16 0 8 8 0 0116 0z" />
                         </svg>
                         <span class="text-sm">Manajemen Keuangan</span>
                     </div>
 
-                    <svg :class="{'rotate-90': openKeuangan}" class="w-4 h-4 transition-transform"
+                    <!-- Panah -->
+                    <svg :class="{ 'rotate-90': openKeuangan }" class="w-4 h-4 transition-transform"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
+                <!-- Dropdown Menu -->
                 <ul x-show="openKeuangan" class="pl-6 mt-2 space-y-2 text-sm" x-cloak>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600
-                hover:bg-gray-100 hover:text-blue-600 transition">
-                            <!-- Ikon laporan keuangan -->
+                        <a href="{{ route('dashboard.keuangan.index') }}"
+                            class="flex items-center space-x-2 px-3 py-2 rounded-lg transition
+   {{ request()->is('dashboard/keuangan*') ? 'bg-gray-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600' }}">
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -179,11 +186,17 @@
 
 
             <!-- Manajemen User -->
-            <li class="border-b border-gray-200 py-2" x-data="{ openUser: false }">
+            <li class="border-t border-b border-gray-200 py-2"
+                x-data="{ openUser: {{ request()->is('dashboard/user/*') ? 'true' : 'false' }} }">
 
-                <button @click="openUser = !openUser" class="flex items-center justify-between w-full px-3 py-2 rounded-lg
-        text-gray-800 hover:bg-gray-100 hover:text-blue-600 transition">
+                <!-- Toggle Button -->
+                <button @click="openUser = !openUser" class="flex items-center justify-between w-full px-3 py-2 rounded-lg  
+        {{ request()->is('dashboard/user/*') 
+            ? 'bg-gray-100 text-blue-600' 
+            : 'text-gray-800 hover:bg-gray-100 hover:text-blue-600' }} 
+        transition">
 
+                    <!-- Ikon + Label -->
                     <div class="flex items-center space-x-2">
                         <!-- Ikon user -->
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -194,23 +207,27 @@
                         <span class="text-sm">Manajemen User</span>
                     </div>
 
-                    <svg :class="{'rotate-90': openUser}" class="w-4 h-4 transition-transform"
+                    <!-- Panah -->
+                    <svg :class="{ 'rotate-90': openUser }" class="w-4 h-4 transition-transform"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
+                <!-- Dropdown Menu -->
                 <ul x-show="openUser" class="pl-6 mt-2 space-y-2 text-sm" x-cloak>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600
-                hover:bg-gray-100 hover:text-blue-600 transition">
+                        <a href="{{ route('dashboard.user.datauser') }}" class="flex items-center space-x-2 px-3 py-2 rounded-lg transition
+                {{ request()->is('dashboard/user/datauser') 
+                    ? 'bg-gray-100 text-blue-600' 
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600' }}">
                             <!-- Ikon laporan user -->
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.79.676 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <span>Laporan User</span>
+                            <span>Data User</span>
                         </a>
                     </li>
                 </ul>

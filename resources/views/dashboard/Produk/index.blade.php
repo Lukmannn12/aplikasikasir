@@ -40,7 +40,7 @@
                                 <form method="GET" action="{{ route('dashboard.produk.index') }}">
                                     <input type="text" name="search" value="{{ request('search') }}"
                                         placeholder="Cari produk..."
-                                        class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring focus:ring-gray-700">
+                                        class="border border-gray-200 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring focus:ring-gray-300">
                                 </form>
                             </div>
                         </template>

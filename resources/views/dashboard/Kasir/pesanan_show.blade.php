@@ -35,7 +35,7 @@
                 @if($pesanan->status == 'completed') bg-green-100 text-green-700
                 @elseif($pesanan->status == 'pending') bg-yellow-100 text-yellow-700
                 @elseif($pesanan->status == 'cancelled') bg-red-100 text-red-700
-                @else bg-gray-100 text-gray-700 @endif">
+                @else bg-green-400 text-white @endif">
                         {{ ucfirst($pesanan->status) }}
                     </span>
                 </div>
@@ -86,24 +86,17 @@
                     </span>
                 </div>
 
-                {{-- PPN 10% --}}
-                @php
-                $ppn = $pesanan->total_price * 0.02;
-                $grandTotal = $pesanan->total_price + $ppn;
-                @endphp
-                <div class="flex justify-between">
-                    <span class="text-gray-600">PPN (2%)</span>
-                    <span class="text-gray-800 font-medium">
-                        Rp {{ number_format($ppn, 0, ',', '.') }}
-                    </span>
-                </div>
+                {{-- Note PPN --}}
+                <p class="text-xs text-gray-500 italic">
+                    *Harga sudah termasuk PPN 3%
+                </p>
             </div>
 
             {{-- Total Akhir --}}
             <div class="flex justify-between mt-4 border-t pt-3">
                 <span class="text-lg font-bold text-gray-900">Total</span>
                 <span class="text-xl font-extrabold text-blue-600">
-                    Rp {{ number_format($grandTotal, 0, ',', '.') }}
+                    Rp {{ number_format($pesanan->total_price, 0, ',', '.') }}
                 </span>
             </div>
         </div>

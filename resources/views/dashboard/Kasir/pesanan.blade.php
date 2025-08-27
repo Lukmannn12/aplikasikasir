@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="mx-auto p-6">
+<div class="mx-auto">
     <div x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 1500)"
         class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Section Kiri: Produk -->
@@ -203,7 +203,11 @@
 
                 <!-- List Pesanan -->
                 <ul class="space-y-4 py-5">
-                    @php $total = 0; @endphp
+                    @php
+                    $subtotal = $pesanans->sum('total_price');
+                    $ppn = $subtotal * 0.03;
+                    $total = $subtotal + $ppn;
+                    @endphp
                     @forelse ($pesanans as $id => $psn)
                     <li class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                         <div class="flex items-center space-x-3">
@@ -236,7 +240,6 @@
                             </form>
                         </div>
                     </li>
-                    @php $total += $psn['total_price']; @endphp
                     @empty
                     <li class="text-gray-500 py-3 text-center">Belum ada pesanan</li>
                     @endforelse
@@ -280,7 +283,6 @@
                         }
                     });
                 </script>
-
 
                 <!-- Total -->
                 <div class="mt-6 flex justify-between items-center font-semibold text-lg border-t pt-4">

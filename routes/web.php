@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\PesananItemController;
 use App\Http\Controllers\ProductCategoryController;
@@ -36,6 +37,7 @@ Route::get('/dashboard/kasir/riwayat/{id}', [PesananController::class, 'riwayatD
 Route::resource('/dashboard/produk/produkk', ProductController::class)->names('dashboard.produk');
 Route::resource('/dashboard/produk/kategori', ProductCategoryController::class)->names('dashboard.produk.kategori');
 Route::resource('/dashboard/kasir/pesanan', PesananController::class)->names('dashboard.kasir.pesanan');
+Route::resource('/dashboard/keuangan/laporankeuangan', KeuanganController::class)->names('dashboard.keuangan');
 
 // Tambah ke pesanan
 Route::post('/dashboard/kasir/pesanan/add', [PesananController::class, 'addToCart'])
@@ -43,3 +45,7 @@ Route::post('/dashboard/kasir/pesanan/add', [PesananController::class, 'addToCar
 
 Route::get('/dashboard/kasir/pesanan/cart', [PesananController::class, 'cart'])
     ->name('dashboard.kasir.pesanan.cart');
+
+
+Route::get('/dashboard/user/datauser', [AuthController::class, 'index'])
+    ->name('dashboard.user.datauser');

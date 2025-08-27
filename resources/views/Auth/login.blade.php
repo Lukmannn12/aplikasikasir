@@ -90,7 +90,7 @@
                 <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
                  <div class="relative flex items-center">
                     <i class="ph ph-lock text-gray-400 absolute left-3"></i>
-                    <input type="email" name="email" value="{{ old('password') }}"
+                    <input type="password" name="password" value="{{ old('password') }}"
                         class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
                         placeholder="Masukkan Password Anda...." required autofocus>
                 </div>

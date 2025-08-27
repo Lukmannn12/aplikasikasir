@@ -37,29 +37,29 @@ class PesananController extends Controller
 
     public function riwayat(Request $request)
     {
-    // Ambil query parameter
-    $search = $request->input('search');
-    $tanggal = $request->input('tanggal');
+        // Ambil query parameter
+        $search = $request->input('search');
+        $tanggal = $request->input('tanggal');
 
-    // Mulai query
-    $query = Pesanan::with('customer')->latest();
+        // Mulai query
+        $query = Pesanan::with('customer')->latest();
 
-    // Filter berdasarkan nama customer
-    if ($search) {
-        $query->whereHas('customer', function ($q) use ($search) {
-            $q->where('name', 'like', '%' . $search . '%');
-        });
-    }
+        // Filter berdasarkan nama customer
+        if ($search) {
+            $query->whereHas('customer', function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
 
-    // Filter berdasarkan tanggal
-    if ($tanggal) {
-        $query->whereDate('created_at', $tanggal);
-    }
+        // Filter berdasarkan tanggal
+        if ($tanggal) {
+            $query->whereDate('created_at', $tanggal);
+        }
 
-    // Ambil hasil
-    $pesanan = $query->get();
+        // Ambil hasil
+        $pesanan = $query->get();
 
-    return view('dashboard.kasir.riwayat', compact('pesanan'));
+        return view('dashboard.kasir.riwayat', compact('pesanan'));
     }
 
 
@@ -132,9 +132,11 @@ class PesananController extends Controller
         ]);
 
         // hitung total dari items
-        $total = collect($validated['items'])->sum('total_price');
+        $subtotal = collect($validated['items'])->sum('total_price');
+        $ppn = $subtotal * 0.03;
+        $total = $subtotal + $ppn;
 
-        $status = $validated['payment_method'] === 'cash' ? 'paid' : 'pending'; 
+        $status = $validated['payment_method'] === 'cash' ? 'paid' : 'pending';
 
         // simpan pesanan
         $pesanan = Pesanan::create([
@@ -206,27 +208,27 @@ class PesananController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-    $context = $request->input('context', 'cart'); // default hapus di cart
+        $context = $request->input('context', 'cart'); // default hapus di cart
 
-    if ($context === 'cart') {
-        // hapus item di cart
-        $cart = session()->get('cart', []);
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart', $cart);
+        if ($context === 'cart') {
+            // hapus item di cart
+            $cart = session()->get('cart', []);
+            if (isset($cart[$id])) {
+                unset($cart[$id]);
+                session()->put('cart', $cart);
+            }
+            return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
         }
-        return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
-    }
 
-    if ($context === 'pesanan') {
-        // hapus pesanan di database
-        $pesanan = Pesanan::findOrFail($id);
-        $pesanan->items()->delete();
-        $pesanan->delete();
-        return redirect()->route('dashboard.kasir.riwayat')
-            ->with('success', 'Pesanan berhasil dihapus.');
-    }
+        if ($context === 'pesanan') {
+            // hapus pesanan di database
+            $pesanan = Pesanan::findOrFail($id);
+            $pesanan->items()->delete();
+            $pesanan->delete();
+            return redirect()->route('dashboard.kasir.riwayat')
+                ->with('success', 'Pesanan berhasil dihapus.');
+        }
 
-    return back()->with('error', 'Konfigurasi hapus tidak dikenali.');
+        return back()->with('error', 'Konfigurasi hapus tidak dikenali.');
     }
 }
