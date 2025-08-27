@@ -138,16 +138,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
 
                 <!-- Grafik Pemasukan Bulanan -->
+                <!-- Grafik Pemasukan Bulanan -->
                 <div class="bg-white shadow-md rounded-xl p-5">
                     <h2 class="text-lg font-semibold text-gray-700 mb-3">Pemasukan Bulanan</h2>
                     <canvas id="incomeChart" class="w-full h-48"></canvas>
                 </div>
 
+
                 <!-- Grafik User Baru -->
                 <div class="bg-white shadow-md rounded-xl p-5">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-3">User Baru</h2>
+                    <h2 class="text-lg font-semibold text-gray-700 mb-3">Total Orders Per Bulan</h2>
                     <canvas id="userChart" class="w-full h-48"></canvas>
                 </div>
+
 
             </div>
         </div>
@@ -156,75 +159,106 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
-            // Grafik Pemasukan Bulanan (Line dengan Animasi)
-    new Chart(document.getElementById('incomeChart'), {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-            datasets: [{
-                label: 'Pemasukan',
-                data: [2000000, 3500000, 2800000, 4000000, 3700000, 5000000],
-                borderColor: 'rgb(59, 130, 246)', // biru
-                backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                tension: 0.4,
-                fill: true,
-                pointRadius: 6,
-                pointBackgroundColor: 'rgb(59, 130, 246)',
-                pointHoverRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            animation: {
-                duration: 2000, // durasi animasi (ms)
-                easing: 'easeOutQuart' // efek animasi
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let value = context.raw;
-                            return 'Rp ' + value.toLocaleString('id-ID');
-                        }
-                    }
+            // Helper format rupiah (mirip number_format PHP)
+                function formatRupiah(angka) {
+                    if (typeof angka !== "number") angka = parseInt(angka);
+                    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+            const ctx = document.getElementById('incomeChart');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @json($months), // ['Jan', 'Feb', ...]
+                    datasets: [{
+                        label: 'Pemasukan',
+                        data: @json($incomeData), // [2000000, 3500000, ...]
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 6,
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                        pointHoverRadius: 8
+                    }]
                 },
-                legend: {
-                    display: true,
-                    labels: {
-                        color: '#374151' // abu-abu gelap
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + value.toLocaleString('id-ID');
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.raw;
+                                    return formatRupiah(value);
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#374151'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatRupiah(value);
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-    });
+            });
 
 
     // Grafik User Baru (Bar)
-    new Chart(document.getElementById('userChart'), {
-        type: 'bar',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-            datasets: [{
-                label: 'User Baru',
-                data: [50, 70, 60, 100, 90, 120],
-                backgroundColor: '#8B5CF6'
-            }]
-        }
-    });
+            new Chart(document.getElementById('userChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: @json($months),
+                        datasets: [{
+                            label: 'Total Orders',
+                            data: @json($ordersData),
+                            backgroundColor: '#8B5CF6',
+                            borderRadius: 8 // biar bar chart lebih smooth
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        animation: {
+                            duration: 1500
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: '#374151'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.raw + ' Orders';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
         </script>
-
-
-
-
     </div>
 </div>
 @endsection
